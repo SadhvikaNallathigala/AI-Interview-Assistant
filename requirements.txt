@@ -1,7 +1,6 @@
 flask
+gunicorn
 opencv-python
-deepface
 transformers
 torch
 speechrecognition
-tf-keras
