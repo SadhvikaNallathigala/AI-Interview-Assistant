@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Interview Assistant</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #e1f5fe);
+            text-align: center;
+        }
+
+        .navbar {
+            background: #0077b6;
+            color: white;
+            padding: 15px;
+        }
+
+        .card {
+            background: white;
+            width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            color: #333;
+        }
+
+        .progress {
+            background: #e0e0e0;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            height: 20px;
+            text-align: right;
+            padding-right: 5px;
+            color: black;
+            font-weight: bold;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        ul {
+            text-align: left;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #0077b6;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+        }
+
+        a:hover {
+            background: #023e8a;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2>🤖 AI Interview Assistant</h2>
+</div>
+
+<div class="card" data-score="{{ score }}">
+    <h2>📊 Interview Analysis</h2>
+
+    <p><b>🗣 Answer:</b><br>{{ text }}</p><br>
+
+    <p><b>💬 Sentiment:</b> {{ sentiment }}</p>
+
+    <p><b>😊 Emotion:</b> {{ emotion }}</p>
+
+    <h3>⭐ Score</h3>
+
+    <div class="progress">
+        <div id="bar" class="progress-bar">0%</div>
+    </div>
+
+    <hr>
+
+    <h3>💡 Feedback</h3>
+    <ul>
+        <li>Good confidence in speech</li>
+        <li>Maintain eye contact</li>
+        <li>Improve clarity</li>
+    </ul>
+
+    <a href="/">🔙 Try Again</a>
+</div>
+
+<script>
+    const container = document.querySelector(".card");
+    const score = parseFloat(container.dataset.score);
+
+    const percent = Math.round(score * 100);
+
+    const bar = document.getElementById("bar");
+    bar.style.width = percent + "%";
+    bar.innerHTML = percent + "%";
+
+    if (score > 0.7) {
+        bar.style.backgroundColor = "#4caf50";
+    } else {
+        bar.style.backgroundColor = "#ff9800";
+    }
+</script>
+
+</body>
+</html>

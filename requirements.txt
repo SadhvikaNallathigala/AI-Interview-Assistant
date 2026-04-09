@@ -1,0 +1,7 @@
+flask
+opencv-python
+deepface
+transformers
+torch
+speechrecognition
+tf-keras
