@@ -1,6 +1,4 @@
 flask
 gunicorn
 opencv-python
-transformers
-torch
 speechrecognition

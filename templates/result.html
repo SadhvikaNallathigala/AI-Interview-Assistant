@@ -2,56 +2,127 @@
 <html>
 <head>
     <title>Results</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         body {
-            font-family: Arial;
-            background: #e6f7ff;
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1d2671, #c33764);
+            color: white;
             text-align: center;
         }
 
-        .card {
-            background: white;
-            width: 500px;
-            margin: 50px auto;
-            padding: 20px;
-            border-radius: 10px;
+        .navbar {
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
         }
 
-        .bar {
-            height: 20px;
-            background: green;
+        .card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            width: 700px;
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+
+        .box {
+            background: rgba(255,255,255,0.15);
+            margin: 15px;
+            padding: 15px;
+            border-radius: 15px;
+        }
+
+        .score {
+            font-size: 30px;
+            font-weight: bold;
+            color: #00ffcc;
+        }
+
+        ul {
+            text-align: left;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #00c6ff;
             color: white;
+            border-radius: 10px;
+            text-decoration: none;
+        }
+
+        a:hover {
+            background: #0072ff;
         }
     </style>
 </head>
 
 <body>
 
-<div class="card" data-score="{{ score }}">
-    <h2>📊 Result</h2>
+<div class="navbar">
+    <h2>📊 Interview Analysis Dashboard</h2>
+</div>
 
-    <p>{{ text }}</p>
-    <p>Sentiment: {{ sentiment }}</p>
-    <p>Emotion: {{ emotion }}</p>
+<div class="card">
 
-    <h3>Score</h3>
-
-    <div style="background:#ccc;">
-        <div id="bar" class="bar">0%</div>
+    <div class="box">
+        <h3>🗣 Your Answer</h3>
+        <p>{{ text }}</p>
     </div>
 
-    <br>
-    <a href="/">Go Back</a>
+    <div class="box">
+        <h3>✨ Improved Answer</h3>
+<p style="text-align:left; white-space: pre-line;">
+    {{ improved_text }}
+</p>
+    </div>
+
+    <div class="box">
+        <p>💬 Sentiment: <b>{{ sentiment }}</b></p>
+        <p>😊 Emotion: <b>{{ emotion }}</b></p>
+        <p>💪 Confidence: <b>{{ confidence }}</b></p>
+        <p>👀 Eye Contact: <b>{{ eye_contact }}%</b></p>
+    </div>
+
+    <div class="box">
+        <h3>⭐ Overall Score</h3>
+        <div class="score">{{ score * 100 }}%</div>
+    </div>
+
+    <div class="box">
+        <h3>💡 Feedback</h3>
+        <ul>
+            <li>Improve eye contact</li>
+            <li>Speak more confidently</li>
+            <li>Structure answers clearly</li>
+        </ul>
+    </div>
+
+    <div class="box">
+        <h3>📈 Performance Graph</h3>
+        <canvas id="chart"></canvas>
+    </div>
+
+    <a href="/">🔙 Try Again</a>
+
 </div>
 
 <script>
-    let score = parseFloat(document.querySelector(".card").dataset.score);
-    let percent = Math.round(score * 100);
-
-    let bar = document.getElementById("bar");
-    bar.style.width = percent + "%";
-    bar.innerHTML = percent + "%";
+new Chart(document.getElementById('chart'), {
+    type: 'line',
+    data: {
+        labels: ['Day 1', 'Day 2', 'Day 3', 'Today'],
+        datasets: [{
+            label: 'Performance',
+            data: [50, 60, 70, {{ score * 100 }}],
+            borderWidth: 2
+        }]
+    }
+});
 </script>
 
 </body>
