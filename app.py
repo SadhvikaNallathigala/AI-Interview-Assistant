@@ -70,7 +70,7 @@ def interview_analysis():
 
             # ⭐ Final Score
             emotion_score = 1 if emotion == "happy" else 0.5
-            final_score = round((text_score * 0.6 + emotion_score * 0.4), 2)
+            final_score = round((text_score * 0.6 + emotion_score * 0.4) * 100, 2)
 
             print("Final Score:", final_score)
 

@@ -76,8 +76,9 @@
 
     <div class="box">
         <h3>✨ Improved Answer</h3>
-<p style="text-align:left; white-space: pre-line;">
+<p style="text-align:left; white-space: pre-line; line-height:1.6;">
     {{ improved_text }}
+</p>
 </p>
     </div>
 
@@ -90,7 +91,7 @@
 
     <div class="box">
         <h3>⭐ Overall Score</h3>
-        <div class="score">{{ score * 100 }}%</div>
+        <div class="score">{{ score }}%</div>
     </div>
 
     <div class="box">
@@ -118,7 +119,7 @@ new Chart(document.getElementById('chart'), {
         labels: ['Day 1', 'Day 2', 'Day 3', 'Today'],
         datasets: [{
             label: 'Performance',
-            data: [50, 60, 70, {{ score * 100 }}],
+            data: [50, 60, 70, {{ score }}],
             borderWidth: 2
         }]
     }
