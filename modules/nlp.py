@@ -11,60 +11,42 @@ def analyze_text(text):
         score = 0.6
         sentiment = "neutral"
 
-    # ✏️ STEP 1: Grammar Correction
-    corrected_text = correct_grammar(text)
+    # 🧠 Clean text
+    cleaned_text = text.strip().capitalize()
 
-    # 💼 STEP 2: Professional Answer Generation
-    improved = generate_professional_answer(corrected_text)
+    # 🔥 Generate smart answer
+    improved = generate_professional_answer(cleaned_text)
 
     return score, sentiment, improved
 
 
-# ✏️ BASIC GRAMMAR FIXER
-def correct_grammar(text):
-    text = text.strip()
-
-    # Capitalize first letter
-    text = text.capitalize()
-
-    # Fix common mistakes
-    text = text.replace("i ", "I ")
-    text = text.replace(" im ", " I am ")
-    text = text.replace(" my name is", "My name is")
-
-    # Add period at end if missing
-    if not text.endswith("."):
-        text += "."
-
-    return text
-
-
-# 💼 PROFESSIONAL ANSWER GENERATOR
 def generate_professional_answer(text):
 
-    improved = f"""
+    text = remove_repetition(text)
+
+    improved_answer = f"""
 Introduction:
-{generate_intro(text)}
+I would like to introduce myself professionally. {text}
 
-Education:
-I am currently pursuing my degree in Computer Science with a specialization in Artificial Intelligence, which has helped me build a strong academic foundation.
+Technical Strength:
+I have hands-on experience working on projects related to my field, especially in areas like machine learning and problem solving. This has helped me build strong analytical and technical skills.
 
-Technical Skills:
-I have worked on projects related to machine learning and deep learning, which enhanced my practical knowledge and problem-solving abilities.
-
-Strengths:
-I consider myself a quick learner who enjoys solving real-world problems and continuously improving my skills.
+Communication & Personality:
+I consider myself a quick learner who enjoys solving real-world problems and continuously improving both technical and communication skills.
 
 Conclusion:
-I am confident in my abilities and highly motivated to contribute effectively in a professional environment.
+Overall, I am confident in my abilities and always eager to learn, grow, and contribute effectively in a professional environment.
 """
 
-    return improved
+    return improved_answer
 
 
-# 🧠 SMART INTRO BUILDER
-def generate_intro(text):
-    if "name" in text.lower():
-        return text
-    else:
-        return f"I would like to introduce myself. {text}"
+def remove_repetition(text):
+    words = text.split()
+    unique_words = []
+
+    for word in words:
+        if word not in unique_words:
+            unique_words.append(word)
+
+    return " ".join(unique_words)
