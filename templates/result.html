@@ -63,6 +63,10 @@
 
 <body>
 
+<div style="position:absolute; top:20px; right:20px;">
+    <a href="/logout" style="color:white;">🚪 Logout</a>
+</div>
+
 <div class="navbar">
     <h2>📊 Interview Analysis Dashboard</h2>
 </div>
@@ -76,7 +80,7 @@
 
     <div class="box">
         <h3>✨ Improved Answer</h3>
-        <p style="text-align:left; white-space: pre-line; line-height:1.6;">
+        <p style="text-align:left; white-space: pre-line;">
             {{ improved_text }}
         </p>
     </div>
@@ -90,7 +94,7 @@
 
     <div class="box">
         <h3>⭐ Overall Score</h3>
-        <div class="score">{{ score }}%</div>
+        <div class="score">{{ score * 100 }}%</div>
     </div>
 
     <div class="box">
@@ -111,37 +115,30 @@
 
 </div>
 
-<!-- ✅ ERROR-FREE SCRIPT -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    const score = Number("{{ score }}");  // ✅ safe conversion
+    const score = Number("{{ score * 100 }}");
 
-    const ctx = document.getElementById('chart');
-
-    if (ctx) {
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Attempt 1', 'Attempt 2', 'Attempt 3', 'Current'],
-                datasets: [{
-                    label: 'Performance',
-                    data: [50, 60, 70, score],
-                    borderWidth: 2,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100
-                    }
+    new Chart(document.getElementById('chart'), {
+        type: 'line',
+        data: {
+            labels: ['Day 1', 'Day 2', 'Day 3', 'Today'],
+            datasets: [{
+                label: 'Performance',
+                data: [50, 60, 70, score],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100
                 }
             }
-        });
-    }
+        }
+    });
 
 });
 </script>
