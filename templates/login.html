@@ -1,46 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login - AI Interview Assistant</title>
+    <title>Login</title>
 
     <style>
         body {
             margin: 0;
             font-family: 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #667eea, #764ba2);
-            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            height: 100vh;
         }
 
-        .container {
-            width: 350px;
+        .login-box {
+            background: rgba(255,255,255,0.1);
             padding: 30px;
             border-radius: 20px;
-            background: rgba(255,255,255,0.1);
             backdrop-filter: blur(20px);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
             text-align: center;
             color: white;
-        }
-
-        h2 {
-            margin-bottom: 20px;
+            width: 300px;
         }
 
         input {
             width: 90%;
-            padding: 12px;
+            padding: 10px;
             margin: 10px 0;
-            border: none;
             border-radius: 10px;
+            border: none;
             outline: none;
         }
 
         button {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             background: #00c6ff;
             border: none;
             border-radius: 10px;
@@ -54,37 +49,34 @@
         }
 
         a {
+            color: white;
             display: block;
-            margin-top: 15px;
-            color: #fff;
+            margin-top: 10px;
             text-decoration: none;
         }
 
         a:hover {
             text-decoration: underline;
         }
-
-        .logo {
-            font-size: 30px;
-            margin-bottom: 10px;
-        }
     </style>
 </head>
 
 <body>
 
-<div class="container">
-    <div class="logo">🤖</div>
-    <h2>AI Interview Assistant</h2>
+<div class="login-box">
+    <h2>🤖 AI Interview Assistant</h2>
 
     <form method="POST">
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
+        <input type="text" name="username" placeholder="Enter Username" required>
+
+        <!-- ✅ ADDED PASSWORD FIELD -->
+        <input type="password" name="password" placeholder="Enter Password" required>
 
         <button type="submit">Login</button>
     </form>
 
-    <a href="/register">Create an account</a>
+    <!-- ✅ ADDED REGISTER LINK -->
+    <a href="/register">Create Account</a>
 </div>
 
 </body>
