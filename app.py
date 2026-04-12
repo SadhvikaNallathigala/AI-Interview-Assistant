@@ -1,99 +1,87 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, session
+import os
+import cv2
+import random
+
 from modules.speech import speech_to_text
 from modules.nlp import analyze_text
 from modules.vision import detect_emotion
-import cv2
-import os
-import random
 
 app = Flask(__name__)
+app.secret_key = "secret123"
 
-# 🎥 Extract frame from video
+
+# 🎥 Extract frame
 def extract_frame(video_path):
     cap = cv2.VideoCapture(video_path)
     success, frame = cap.read()
 
     if success:
-        frame_path = "frame.jpg"
-        cv2.imwrite(frame_path, frame)
-    else:
-        frame_path = None
+        cv2.imwrite("frame.jpg", frame)
 
     cap.release()
-    return frame_path
+    return "frame.jpg"
 
 
-@app.route('/', methods=['GET', 'POST'])
-def interview_analysis():
+# 🔐 LOGIN
+@app.route('/login', methods=['GET','POST'])
+def login():
     if request.method == 'POST':
-        try:
-            # 📥 Get files
-            audio = request.files.get('audio')
-            video = request.files.get('video')
+        session['user'] = request.form['username']
+        return redirect('/dashboard')
+    return render_template("login.html")
 
-            if not audio or not video:
-                return "Please upload both audio and video files."
 
-            # 💾 Save files
-            audio_path = "audio.wav"
-            video_path = "video.mp4"
+# 🔓 LOGOUT
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect('/login')
 
-            audio.save(audio_path)
-            video.save(video_path)
 
-            print("Files uploaded successfully")
+# 🔁 ROOT
+@app.route('/')
+def root():
+    if 'user' in session:
+        return redirect('/dashboard')
+    return redirect('/login')
 
-            # 🎤 Speech → Text
-            text = speech_to_text(audio_path)
-            print("Extracted Text:", text)
 
-            # 🧠 NLP Analysis (IMPORTANT LINE 🔥)
-            text_score, sentiment, improved_text = analyze_text(text)
+# 🏠 DASHBOARD
+@app.route('/dashboard', methods=['GET','POST'])
+def dashboard():
+    if 'user' not in session:
+        return redirect('/login')
 
-            # 🎥 Extract frame
-            frame_path = extract_frame(video_path)
+    if request.method == 'POST':
+        audio = request.files['audio']
+        video = request.files['video']
 
-            # 😊 Emotion Detection
-            if frame_path:
-                try:
-                    emotion = detect_emotion(frame_path)
-                except:
-                    emotion = "neutral"
-            else:
-                emotion = "neutral"
+        audio.save("audio.wav")
+        video.save("video.mp4")
 
-            # 💪 Confidence logic
-            confidence = "High" if text_score > 0.7 else "Medium"
+        text = speech_to_text("audio.wav")
+        text_score, sentiment, improved_text = analyze_text(text)
 
-            # 👀 Eye Contact (simulated)
-            eye_contact = random.randint(60, 95)
+        frame = extract_frame("video.mp4")
+        emotion = detect_emotion(frame)
 
-            # ⭐ Final Score
-            emotion_score = 1 if emotion == "happy" else 0.5
-            final_score = round((text_score * 0.6 + emotion_score * 0.4) * 100, 2)
+        confidence = "High" if text_score > 0.7 else "Medium"
+        eye_contact = random.randint(60, 95)
 
-            print("Final Score:", final_score)
+        score = round((text_score * 0.6 + 0.4) * 100, 2)
 
-            # 📊 Send data to frontend
-            return render_template(
-                "result.html",
-                text=text,
-                improved_text=improved_text,
-                sentiment=sentiment,
-                emotion=emotion,
-                confidence=confidence,
-                eye_contact=eye_contact,
-                score=final_score
-            )
-
-        except Exception as e:
-            print("ERROR:", e)
-            return f"Error occurred: {str(e)}"
+        return render_template("result.html",
+                               text=text,
+                               improved_text=improved_text,
+                               sentiment=sentiment,
+                               emotion=emotion,
+                               confidence=confidence,
+                               eye_contact=eye_contact,
+                               score=score)
 
     return render_template("index.html")
 
 
-# 🚀 Run App
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(debug=True)
