@@ -1,2 +1,2 @@
-def detect_emotion(img_path):
+def detect_emotion(img):
     return "happy"
