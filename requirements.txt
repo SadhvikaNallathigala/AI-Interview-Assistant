@@ -1,4 +1,7 @@
 flask
-gunicorn
-opencv-python
+opencv-python-headless
+transformers
+torch
 speechrecognition
+deepface
+gunicorn
